@@ -24,3 +24,18 @@ async def test_seq_bug1(dut):
     await FallingEdge(dut.clk)
 
     cocotb.log.info('#### CTB: Develop your test here! ######')
+
+    a = [1,0,1,1]
+    out = [0, 0, 0, 1]
+    
+    for i in range(5):
+
+        dut.inp_bit.value = a[i]
+
+        print(dut.clk.value)
+
+        await RisingEdge(dut.clk)
+
+        dut._log.info(f'Input : {a[i]} model= {out[i]} DUT={dut.seq_seen.value}')
+
+        assert dut.seq_seen.value == out[i], f"Mux result is incorrect: {dut.seq_seen.value} != {out[i]}, iter = {i}"
