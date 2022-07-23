@@ -12,3 +12,4 @@ Level1_Design2 Bugs identified
 
 Level2_Design Bugs identified
 1. ANDN results mismatch
+2. Immediate type instructions, for instructions not present, DUT output is 0xa, which should be 0x0.
