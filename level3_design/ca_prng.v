@@ -99,7 +99,7 @@ module ca_prng(
   //--------------------------------------------------------------------
   always @ (posedge clk)
     begin : reg_update
-      if (!reset_n)
+      if (reset_n)
         begin
           // Register reset.
           update_rule_reg <= DEFAULT_RULE;
@@ -131,7 +131,7 @@ module ca_prng(
   always @*
     begin : ca_state_update
       // Update for ca_state_reg bit 0.
-      case({ca_state_reg[31], ca_state_reg[0], ca_state_reg[1]})
+      case({ca_state_reg[0], ca_state_reg[0], ca_state_reg[1]})
         0:
         begin
           tmp_ca_state_new[0] = update_rule_reg[0];
@@ -1294,7 +1294,7 @@ module ca_prng(
 
       // Should an init pattern or the next pattern be stored in
       // the CA array?
-      if (load_init_pattern || next_pattern)
+      if (load_init_pattern && next_pattern)
         begin
           ca_state_we = 1;
         end
