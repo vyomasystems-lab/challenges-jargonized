@@ -68,7 +68,7 @@ class CellularAutomata():
         
     def print_state(self):
         """Print the current state of the cellular automata."""
-        print self.my_state
+        print(self.my_state)
 
         
     def update_ca_state(self):
@@ -97,11 +97,14 @@ class CellularAutomata():
             # the update rule array and update the cell.
             rule_index = 4 * bit_left + 2 * bit_mid + bit_right
             if self.verbose:
-                print "rule_index = %d " % rule_index
+                print("rule_index = %d " % rule_index)
             new_state[curr_bit] = self.my_rule[rule_index]
             
         # Replace the old state array with the new array.
         self.my_state = new_state
+    
+    def return_cur_state(self):
+        return self.my_state
 
 
 #-------------------------------------------------------------------
@@ -109,30 +112,34 @@ class CellularAutomata():
 #
 # Main function.
 #-------------------------------------------------------------------
-def main():
-    # Create an update rule array. This is Wolframs rule 30.
-    # We also create a CA array with a given init state.
-    my_update_rules = [0, 1, 1, 1, 1, 0, 0, 0]
-    my_init_state = [1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0]
+def ca_prng(init_pattern_data, load_init_state, update_rule, load_update_rule, next_pattern):
 
-    # Create a CA object.
+    my_init_state = [0 for i in range(32)]
+    my_update_rules = [0, 0, 0, 1, 1, 1, 1, 0] #rule 30
+    prng_data = 0
+    if load_update_rule == 1:
+        j = bin(update_rule).replace('0b','').zfill(8)
+        m = list(j)
+        for l in range(len(m)):
+            m[l] = int(m[l])
+        my_update_rule = m
+    if load_init_state == 1:
+        j = bin(init_pattern_data).replace('0b','').zfill(32)
+        m = list(j)
+        for l in range(len(m)):
+            m[l] = int(m[l])
+        my_init_rule = m
     my_ca = CellularAutomata(my_update_rules, my_init_state, False)
 
-    # Run a few iterations printing the state before each update.
-    for iteration in range(1000):
-        my_ca.print_state()
+    if (next_pattern == 1):
         my_ca.update_ca_state()
+        prng = my_ca.return_cur_state()
+        for l in range(len(prng)):
+            prng[l] = str(prng[l])
+        prng_data = int(''.join(prng),2)
+        
+    
+    return prng_data
+    
 
-
-#-------------------------------------------------------------------
-# __name__
-# Python thingy which allows the file to be run standalone as
-# well as parsed from within a Python interpreter.
-#-------------------------------------------------------------------
-if __name__=="__main__": 
-    # Run the main function.
-    sys.exit(main())
-
-#=======================================================================
-# EOF ca_prng.py
-#=======================================================================
+     
