@@ -99,7 +99,7 @@ module ca_prng(
   //--------------------------------------------------------------------
   always @ (posedge clk)
     begin : reg_update
-      if (reset_n)
+      if (!reset_n)
         begin
           // Register reset.
           update_rule_reg <= DEFAULT_RULE;
