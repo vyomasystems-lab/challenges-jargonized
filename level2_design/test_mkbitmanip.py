@@ -89,6 +89,8 @@ def run_test_Rtype(dut):
     func7_2 = [0x01000000, 0x09000000]
     func3 = [0x0000F000, 0x0000E000, 0x0000C000, 0x00009000, 0x0000D000]
     opcode = 0x000000B3
+    count = 0
+    err = []
 
     for i in func7_1:
         for j in func7_2:
@@ -101,9 +103,6 @@ def run_test_Rtype(dut):
                 mav_putvalue_src2 = 0x0
                 mav_putvalue_src3 = 0x0
                 mav_putvalue_instr = i+j+k+opcode
-
-                if (mav_putvalue_instr == 0x4100f0b3):
-                    continue
 
                 # expected output from the model
                 expected_mav_putvalue = bitmanip(mav_putvalue_instr, mav_putvalue_src1, mav_putvalue_src2, mav_putvalue_src3)
@@ -126,7 +125,10 @@ def run_test_Rtype(dut):
                 # comparison
                 error_message = f'Value mismatch DUT = {hex(dut_output)} does not match MODEL = {hex(expected_mav_putvalue)} for inst = {hex(i+j+k+opcode)}'
                 
-                assert dut_output == expected_mav_putvalue, error_message
+                if (dut_output != expected_mav_putvalue):
+                    err.append(error_message)
+                
+    assert count==0, "Bugs Found"
 
 
 @cocotb.test()
