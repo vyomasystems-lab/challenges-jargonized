@@ -1,59 +1,61 @@
 # See LICENSE.iitm for details
 # See LICENSE.vyoma for details
 
+import os
 import random
-import sys
+
+
 import cocotb
-from cocotb.decorators import coroutine
-from cocotb.triggers import Timer, RisingEdge
-from cocotb.result import TestFailure
 from cocotb.clock import Clock
+from cocotb.triggers import RisingEdge, FallingEdge
 
-from ca_prng import *
-
-# Clock Generation
-@cocotb.coroutine
-def clock_gen(signal):
-    while True:
-        signal.value <= 0
-        yield Timer(1) 
-        signal.value <= 1
-        yield Timer(1) 
-
-
+from prng_compute import *
 
 @cocotb.test()
-def run_test_random(dut):
+async def run_test_random(dut):
 
     # clock
-    cocotb.fork(clock_gen(dut.clk))
+    clock = Clock(dut.clk, 10, units="us")  # Create a 10us period clock on port clk
+    cocotb.start_soon(clock.start())    
 
     # reset
-    dut.reset_n.value <= 0
-    yield Timer(10) 
-    dut.reset_n.value <= 1
-
-    print(dut.ca_state_reg.value)
-
+    dut.reset_n.value = 0
+    await FallingEdge(dut.clk)  
+    dut.reset_n.value = 1
+    
     count = 0
     err = []
+    
+    initial = random.randint(0,4294967295)
+    load_initial = [0,0,0,1,0,0,0,0,0,0,0,1,0,0,0]
+    updaterule = 90
+    defaultupdaterule = 30
+    load_update = [0,0,0,0,0,0,0,0,0,0,0,1,0,0,0]
+    nextpattern = [0,0,0,0,0,1,1,1,1,1,1,1,1,1,1]
+    expected = [0,0,0,initial]
 
-    ######### CTB : Modify the test to expose the bug #############
-    # input transaction
+    for i in range(4,15):
+        if (load_initial[i] and nextpattern[i]):
+            expected.append(initial)
+        elif (nextpattern[i]):
+            if load_update[i]:
+                expected.append(prng_compute(expected[i-1],updaterule))
+            else:
+                expected.append(prng_compute(expected[i-1],defaultupdaterule))
+        else:
+            expected.append(expected[i-1])
 
-    for i in range(5):
 
-       
-        init_pattern_data = random.randint(0,4294967295)
-        load_init_pattern = random.randint(0,1)
-        update_rule = 0b01011010 #rule 90
-        load_update_rule = random.randint(0,1)
-        next_pattern = random.randint(0,1)
-        
-        # expected output from the model
-        expected_prng_data = ca_prng(init_pattern_data,load_init_pattern,update_rule,load_update_rule,next_pattern)
+    for i in range(15):
+
+        init_pattern_data = initial
+        load_init_pattern = load_initial[i]
+        update_rule = updaterule
+        load_update_rule = load_update[i]
+        next_pattern = nextpattern[i]
 
         # driving the input transaction
+        await FallingEdge(dut.clk)
         dut.init_pattern_data.value = init_pattern_data
         dut.load_init_pattern.value = load_init_pattern
         dut.update_rule.value = update_rule
@@ -61,23 +63,23 @@ def run_test_random(dut):
         dut.next_pattern.value = next_pattern
 
         
-
-        yield Timer(1) 
-
+        expected_prng_data = expected[i]
+            
+        
+        
         # obtaining the output
+        await RisingEdge(dut.clk)
         dut_prng_data = dut.prng_data.value
-
-        print(dut_prng_data, expected_prng_data)
 
         cocotb.log.info(f'DUT OUTPUT={hex(dut_prng_data)}')
         cocotb.log.info(f'EXPECTED OUTPUT={hex(expected_prng_data)}')
         
         # comparison
-        error_message = f'Value mismatch DUT = {hex(dut_output)} does not match MODEL = {hex(expected_mav_putvalue)} for inst = {hex(inst)}'
-        
+        error_message = f'Value mismatch DUT = {hex(dut_prng_data)} does not match MODEL = {hex(expected_prng_data)}'
+
         if (dut_prng_data != expected_prng_data):
             count+=1
             err.append(error_message)
         
-        assert count == 0 , f"Bugs Found \n {err}"
+    assert count == 0 , f"Bugs Found \n {err}"
             
