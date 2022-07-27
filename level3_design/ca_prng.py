@@ -116,19 +116,22 @@ def ca_prng(init_pattern_data, load_init_state, update_rule, load_update_rule, n
 
     my_init_state = [0 for i in range(32)]
     my_update_rules = [0, 0, 0, 1, 1, 1, 1, 0] #rule 30
-    prng_data = 0
+    #prng_data = 0
+    
     if load_update_rule == 1:
         j = bin(update_rule).replace('0b','').zfill(8)
         m = list(j)
         for l in range(len(m)):
             m[l] = int(m[l])
         my_update_rule = m
+   
     if load_init_state == 1:
         j = bin(init_pattern_data).replace('0b','').zfill(32)
         m = list(j)
         for l in range(len(m)):
             m[l] = int(m[l])
         my_init_rule = m
+   
     my_ca = CellularAutomata(my_update_rules, my_init_state, False)
 
     if (next_pattern == 1):
