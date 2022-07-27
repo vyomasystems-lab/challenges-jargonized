@@ -40,4 +40,4 @@ async def test_seq_bug1(dut):
 
         dut._log.info(f'Input : {a[i]} model= {out[i]} DUT={dut.seq_seen.value}')
 
-        assert dut.seq_seen.value == out[i], f"Mux result is incorrect: {dut.seq_seen.value} != {out[i]}, iter = {i}"
+        assert dut.seq_seen.value == out[i], f"Sequence seen result is incorrect: {dut.seq_seen.value} != {out[i]}, iter = {i}"
