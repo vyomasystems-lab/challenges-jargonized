@@ -99,9 +99,9 @@ def run_test_Rtype(dut):
                 ######### CTB : Modify the test to expose the bug #############
                 # input transaction
 
-                mav_putvalue_src1 = 0x5
-                mav_putvalue_src2 = 0x0
-                mav_putvalue_src3 = 0x0
+                mav_putvalue_src1 = random.randint(0,4294967295)
+                mav_putvalue_src2 = random.randint(0,4294967295)
+                mav_putvalue_src3 = random.randint(0,4294967295)
                 mav_putvalue_instr = i+j+k+opcode
 
                 # expected output from the model
@@ -127,8 +127,11 @@ def run_test_Rtype(dut):
                 
                 if (dut_output != expected_mav_putvalue):
                     err.append(error_message)
+                    count+=1
+
                 
-    assert count==0, "Bugs Found"
+                
+    assert count==0, f"Bugs Found, {err}"
 
 
 @cocotb.test()
@@ -154,7 +157,8 @@ def run_test_Itype(dut):
         k = m.rjust(32,'0')
         imm.append(int(k,2))
  
-
+    count = 0
+    err = []
 
     for i in func5:
         for j in func5_1:
@@ -165,9 +169,9 @@ def run_test_Itype(dut):
                     # input transaction
 
                                    
-                    mav_putvalue_src1 = 0x5
-                    mav_putvalue_src2 = 0x3
-                    mav_putvalue_src3 = 0x0
+                    mav_putvalue_src1 = random.randint(0,4294967295)
+                    mav_putvalue_src2 = random.randint(0,4294967295)
+                    mav_putvalue_src3 = random.randint(0,4294967295)
                     mav_putvalue_instr = int(i+k+opcode)+val+j
 
                     #if (mav_putvalue_instr == 0x4100f0b3):
@@ -195,7 +199,13 @@ def run_test_Itype(dut):
                     # comparison
                     error_message = f'Value mismatch DUT = {hex(dut_output)} does not match MODEL = {hex(expected_mav_putvalue)} for inst = {hex(i+j+k+opcode+val)}'
                     
-                    #assert dut_output == expected_mav_putvalue, error_message
+                    if (dut_output != expected_mav_putvalue):
+                        err.append(error_message)
+                        count+=1
+
+                
+                
+    assert count==0, f"Bugs Found, {err}"
 
 @cocotb.test()
 def run_test_R4type(dut):
@@ -211,14 +221,17 @@ def run_test_R4type(dut):
     func2 = [0x06000000,0x04000000]
     func3 = [0x00001000, 0x00005000]
     opcode = 0x00000033
+
+    count = 0
+    err = []
    
     for i in func2:
         for k in func3:
                             
                                        
-            mav_putvalue_src1 = 0x51
-            mav_putvalue_src2 = 0x33
-            mav_putvalue_src3 = 0x12
+            mav_putvalue_src1 = random.randint(0,4294967295)
+            mav_putvalue_src2 = random.randint(0,4294967295)
+            mav_putvalue_src3 = random.randint(0,4294967295)
             mav_putvalue_instr = i+k+opcode
 
             # expected output from the model
@@ -242,6 +255,11 @@ def run_test_R4type(dut):
             # comparison
             error_message = f'Value mismatch DUT = {hex(dut_output)} does not match MODEL = {hex(expected_mav_putvalue)} for inst = {hex(i+k+opcode)}'
             
-            assert dut_output == expected_mav_putvalue, error_message
+            if (dut_output != expected_mav_putvalue):
+                err.append(error_message)
+                count+=1
 
+                
+                
+    assert count==0, f"Bugs Found, {err}"
 
