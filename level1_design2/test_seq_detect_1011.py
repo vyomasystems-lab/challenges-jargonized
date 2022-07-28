@@ -20,24 +20,20 @@ async def test_seq_bug1(dut):
     # reset
     dut.reset.value = 1
     await FallingEdge(dut.clk)  
-    print(f"current_state_value: {dut.current_state.value}")
     dut.reset.value = 0
     await FallingEdge(dut.clk)
 
     cocotb.log.info('#### CTB: Develop your test here! ######')
 
-    a = [1,0,1,1,0,1,1,0]
-    out = [0, 0, 0, 0, 1, 0, 0, 1]
+    a = [1,0,1,1,0,0,1,0,1,1,0,1,1,0]
+    out = [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1]
     
-    for i in range(8):
+    for i in range(14):
 
         dut.inp_bit.value = a[i]
 
         await RisingEdge(dut.clk)
         
-        print(f"current_state_value: {dut.current_state.value}")
-        print(f"next_state_value: {dut.next_state.value}")
-
         dut._log.info(f'Input : {a[i]} model= {out[i]} DUT={dut.seq_seen.value}')
 
-        assert dut.seq_seen.value == out[i], f"Sequence seen result is incorrect: {dut.seq_seen.value} != {out[i]}, iter = {i}"
+        assert dut.seq_seen.value == out[i], f"Sequence seen result is incorrect: {dut.seq_seen.value} != {out[i]}"
