@@ -15,41 +15,68 @@ Assert statement is used to raise a message when the actual and the expected out
 ## Verification Strategy
 
 Firstly, the clock signal is set up and fed to the DUT. Secondly, the DUT is reset.
-For debugging the code, 
-```
-//Case 1:
-Assertion Error: Mux result is incorrect: 00 != 1, sel = 30
+For debugging the code, a random input vector was hand-coded by me such that the sequence 1011 corrected independently and as part of other 1011 sequences.  
 
-//Case2:
-Assertion Error: Mux result is incorrect: 01 != 0 , sel = 13
-```
-
-Observation: 1. Some issue with select line 13 and 30. 
-Inference: Default line must be zero.
+Observation: seq_seen(output) was asserted for independent sequences but not for dependent sequences.
 
 ## Test Scenario
 ```
-Inputs 0 to 30 : All 1's
-Select values : All values ranging from 0 to 30, limits inclusive.
+Input: Hand-coded random vector consisting of the sequence 1011
+input = [1,0,1,1,0,0,1,0,1,1,0,1,1,0,1,1,1,1,0,1,0,1,1,1]
+expected out = [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1]
 ```
-
-Outputs mismatched for the above mentioned bugs. 
-
 ![Bugs](/images/scr_121.png)
 
-## Design Bug
+``` 
+ 20000.00ns INFO     Input : 1 model= 0 DUT=0
+ 30000.00ns INFO     Input : 0 model= 0 DUT=0
+ 40000.00ns INFO     Input : 1 model= 0 DUT=0
+ 50000.00ns INFO     Input : 1 model= 0 DUT=0
+ 60000.00ns INFO     Input : 0 model= 1 DUT=1
+ 70000.00ns INFO     Input : 0 model= 0 DUT=0
+ 80000.00ns INFO     Input : 1 model= 0 DUT=0
+ 90000.00ns INFO     Input : 0 model= 0 DUT=0
+100000.00ns INFO     Input : 1 model= 0 DUT=0
+110000.00ns INFO     Input : 1 model= 0 DUT=0
+120000.00ns INFO     Input : 0 model= 1 DUT=1
+130000.00ns INFO     Input : 1 model= 0 DUT=0
+140000.00ns INFO     Input : 1 model= 0 DUT=0
+150000.00ns INFO     Input : 0 model= 1 DUT=0
+160000.00ns INFO     Input : 1 model= 0 DUT=0
+170000.00ns INFO     Input : 1 model= 0 DUT=0
+180000.00ns INFO     Input : 1 model= 1 DUT=0
+190000.00ns INFO     Input : 1 model= 0 DUT=0
+200000.00ns INFO     Input : 0 model= 0 DUT=0
+210000.00ns INFO     Input : 1 model= 0 DUT=0
+220000.00ns INFO     Input : 0 model= 0 DUT=0
+230000.00ns INFO     Input : 1 model= 0 DUT=0
+240000.00ns INFO     Input : 1 model= 0 DUT=0
+250000.00ns INFO     Input : 1 model= 1 DUT=1
 ```
-// Bug 1: both inp12 and inp13 uses 13 as select signal
-line 40: 5'b01101: out = inp12;
-line 41: 5'b01101: out = inp13; 
+
+## Design Bug
+
+Observation: When two sequences occured consecutively or occured partially and then completely, output was not asserted. On analysing, the below two bugs were found:
+
+```
+// Bug 1: When seq 1011 is seen, no matter the next input, the state machine was reset, ignoring the last seen '1' as the potential start of another valid sequence.
+// Lines 67 - 70
+SEQ_1011:
+   begin
+    next_state = IDLE;
+   end
 ```
 
 ```
-//Bug 2: case for selecting inp30 missing
-line 56:   5'b11100: out = inp28;
-line 57:   5'b11101: out = inp29;
-line 58:   default: out = 0;
-line 59: endcase
+//Bug 2: When seq 101 was seen but the following input was zero, the state machine was reset, ignoring the last seen '10' as the potential start of another valid sequence.
+// Lines 60 - 66
+SEQ_101:
+  begin
+    if(inp_bit == 1)
+      next_state = SEQ_1011;
+    else
+      next_state = IDLE;
+  end
 ```
 
 ## Design Fix
