@@ -34,7 +34,7 @@ Select values : All values ranging from 0 to 30, limits inclusive.
 ```
 
 Outputs mismatched for the above mentioned bugs. 
-![Bugs](/images/scr_113.png)
+![Bugs](/images/scr_112.png)
 
 ## Design Bug
 ```
