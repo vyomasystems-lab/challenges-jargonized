@@ -18,10 +18,10 @@ Firstly, the input singals and select signals where given random values. Many of
 
 ```
 //Case 1:
-$ Assertion Error: Mux result is incorrect: 00 != 1, sel = 30
+Assertion Error: Mux result is incorrect: 00 != 1, sel = 30
 
 //Case2:
-$ Assertion Error: Mux result is incorrect: 01 != 0 , sel = 13
+Assertion Error: Mux result is incorrect: 01 != 0 , sel = 13
 ```
 
 Observation: 1. Some issue with select line 13 and 30. 
@@ -39,19 +39,19 @@ Outputs mismatched for the above mentioned bugs.
 ## Design Bug
 ```
 // Bug 1: both inp12 and inp13 uses 13 as select signal
-$  line 40: 5'b01101: out = inp12;
-$  line 41: 5'b01101: out = inp13; 
+line 40: 5'b01101: out = inp12;
+line 41: 5'b01101: out = inp13; 
 ```
 
 ```
 //Bug 2: case for selecting inp30 missing
-$   5'b11100: out = inp28;
-$   5'b11101: out = inp29;
-$   default: out = 0;
-$ endcase
+line 56:   5'b11100: out = inp28;
+line 57:   5'b11101: out = inp29;
+line 58:   default: out = 0;
+line 59: endcase
 ```
 
-Design Fix
+## Design Fix
 
 The modified file is available here ![Modified Mux Module](correct_design/mux.v)
 
