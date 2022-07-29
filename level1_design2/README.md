@@ -85,7 +85,7 @@ After fixing the bugs, both tests successfully passed.
 
 ![Verified](/images/scr_122.png)
 
-The modified file is available here ![Modified Mux Module](correct_design/seq_detect_1011.v)
+The modified file is available here ![Modified Sequence Detector Module](correct_design/seq_detect_1011.v)
 
 
 
