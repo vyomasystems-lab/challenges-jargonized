@@ -81,7 +81,7 @@ SEQ_101:
 
 ## Design Fix
 
-After fixing the bugs, both tests successfully passed.
+After fixing the bugs, the test succeeded.
 
 ![Verified](/images/scr_122.png)
 
