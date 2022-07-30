@@ -64,9 +64,16 @@ For debugging the code, a random load_init_pattern and next_pattern was hand-cod
  expected = [0,0,0,0,initial]
  my_update_rule = defaultupdaterule
 ```
+
+Bug 1: The value is unknown after thus indicating a problem in reset
+
 ![Reset](../images/scr_34.png)
 
+Bug 2: DUT output is always zero for all possible and valid input combinations, thus indicating an issue in the State Register modification block.
+
 ![load](../images/scr_31.png)
+
+Bug 3: Difference is observed in the first and the last bit initially(which in due courses propagates through the Automaton), thus indicating an issue.
 
 ![ring break](../images/scr_32.png)
 
