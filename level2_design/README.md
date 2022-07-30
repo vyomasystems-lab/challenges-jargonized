@@ -4,7 +4,7 @@
 
 The verification environment is setup using Vyoma's UpTickPro provided for the hackathon.
 
-![Gitpod Environment](/images/scr_111.png)
+![Gitpod Environment](../images/scr_111.png)
 
 ## Verification Enivronment
 
@@ -18,7 +18,7 @@ Firstly, the instruction was randomized. Since the instruction set is limited, t
 Three test functions were written, each targeting one of the three instruction types(R-Type, R4-Type and I-Type).
 Using the instruction sheet, the possible values that different parts of an instruction can assume were hand-coded and the operands were randomised.
 
-![Instruction Sheet](/images/scr_21.png)
+![Instruction Sheet](../images/scr_21.png)
 
 
 ## Test Scenario
@@ -46,7 +46,7 @@ func3 = [0x00001000, 0x00005000]
 opcode = 0x00000013
 ```
 
-![Bugs](/images/scr_22.png)
+![Bugs](../images/scr_22.png)
 
 
 ## Design Bug
@@ -54,11 +54,11 @@ opcode = 0x00000013
 The bugs identified are:
 
 1. Incorrect result for ANDN
-![ANDN](/images/scr_23.png)
+![ANDN](../images/scr_23.png)
 
 2. FSRI being confused with R4-Type instruction, thus leading to ambiguity.
 The result was obtained when R4-Type instructions were tested.
-![ANDN](/images/scr_24.png)
+![ANDN](../images/scr_24.png)
 
 ## Design Fix
 The task of fixing the bugs was not pursued for this module.
