@@ -64,15 +64,15 @@ For debugging the code, a random load_init_pattern and next_pattern was hand-cod
  expected = [0,0,0,0,initial]
  my_update_rule = defaultupdaterule
 ```
-![Reset](../images/scr_31.png)
+![Reset](../images/scr_34.png)
 
-![load](../images/scr_32.png)
+![load](../images/scr_31.png)
 
-![ring break](../images/scr_33.png)
+![ring break](../images/scr_32.png)
 
 The third bug can be figured by observing the difference between the expected and the actual output. The position(index of CA) of difference reveals the bug. The bug slowly propagates through the automaton.
 
-![diff](../images/scr_34.png)
+![diff](../images/scr_33.png)
 
 
 ## Design Fix
