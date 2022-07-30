@@ -4,7 +4,7 @@
 
 The verification environment is setup using Vyoma's UpTickPro provided for the hackathon.
 
-![Gitpod Environment](/images/scr_111.png)
+![Gitpod Environment](../images/scr_111.png)
 
 ## Verification Enivronment
 
@@ -35,7 +35,7 @@ Select values : All values ranging from 0 to 30, limits inclusive.
 
 Outputs mismatched for the above mentioned bugs. 
 
-![Bugs](/images/scr_112.png)
+![Bugs](../images/scr_112.png)
 
 ## Design Bug
 ```
@@ -56,7 +56,7 @@ line 59: endcase
 
 After fixing the bugs, both tests successfully passed.
 
-![Verified](/images/scr_113.png)
+![Verified](../images/scr_113.png)
 
 The modified file is available here ![Modified Mux Module](correct_design/mux.v)
 
