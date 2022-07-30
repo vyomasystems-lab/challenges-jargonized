@@ -54,11 +54,13 @@ opcode = 0x00000013
 The bugs identified are:
 
 1. Incorrect result for ANDN
+2. 
 ![ANDN](../images/scr_23.png)
 
 2. FSRI being confused with I-Type instruction, thus leading to ambiguity.
 The result was obtained when I-Type instructions were tested.
-![ANDN](../images/scr_25.png)
+
+![FSRI](../images/scr_25.png)
 
 ## Design Fix
 The task of fixing the bugs was not pursued for this module.
