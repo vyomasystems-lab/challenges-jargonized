@@ -4,7 +4,7 @@
 
 The verification environment is setup using Vyoma's UpTickPro provided for the hackathon.
 
-![Gitpod Environment](/images/scr_111.png)
+![Gitpod Environment](../images/scr_111.png)
 
 ## Verification Enivronment
 
@@ -25,7 +25,7 @@ Input: Hand-coded random vector consisting of the sequence 1011
 input = [1,0,1,1,0,0,1,0,1,1,0,1,1,0,1,1,1,1,0,1,0,1,1,1]
 expected out = [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1]
 ```
-![Bugs](/images/scr_121.png)
+![Bugs](../images/scr_121.png)
 
 ``` 
  20000.00ns INFO     Input : 1 model= 0 DUT=0
@@ -83,7 +83,7 @@ SEQ_101:
 
 After fixing the bugs, the test succeeded.
 
-![Verified](/images/scr_122.png)
+![Verified](../images/scr_122.png)
 
 The modified file is available here ![Modified Sequence Detector Module](correct_design/seq_detect_1011.v)
 
