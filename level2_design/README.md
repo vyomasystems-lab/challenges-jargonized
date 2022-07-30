@@ -58,7 +58,7 @@ The bugs identified are:
 
 2. FSRI being confused with R4-Type instruction, thus leading to ambiguity.
 The result was obtained when R4-Type instructions were tested.
-![ANDN](../images/scr_24.png)
+![ANDN](../images/scr_25.png)
 
 ## Design Fix
 The task of fixing the bugs was not pursued for this module.
