@@ -54,7 +54,7 @@ opcode = 0x00000013
 The bugs identified are:
 
 1. Incorrect result for ANDN
-2. 
+
 ![ANDN](../images/scr_23.png)
 
 2. FSRI being confused with I-Type instruction, thus leading to ambiguity.
