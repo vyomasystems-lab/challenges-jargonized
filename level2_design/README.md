@@ -51,7 +51,17 @@ opcode = 0x00000013
 
 ## Design Bug
 
-Observation: When two sequences occured consecutively or occured partially and then completely, output was not asserted. On analysing, the below two bugs were found:
+The bugs identified are:
+
+1. Incorrect result for ANDN
+![ANDN](/images/scr_23.png)
+
+2. FSRI being confused with R4-Type instruction, thus leading to ambiguity.
+The result was obtained when R4-Type instructions were tested.
+![ANDN](/images/scr_24.png)
+
+## Design Fix
+The task of fixing the bugs was not pursued for this module.
 
 
 
