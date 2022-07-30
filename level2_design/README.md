@@ -56,8 +56,8 @@ The bugs identified are:
 1. Incorrect result for ANDN
 ![ANDN](../images/scr_23.png)
 
-2. FSRI being confused with R4-Type instruction, thus leading to ambiguity.
-The result was obtained when R4-Type instructions were tested.
+2. FSRI being confused with I-Type instruction, thus leading to ambiguity.
+The result was obtained when I-Type instructions were tested.
 ![ANDN](../images/scr_25.png)
 
 ## Design Fix
