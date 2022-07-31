@@ -15,7 +15,7 @@ Assert statement is used to raise a message when the actual and the expected out
 ## Verification Strategy
 
 Firstly, the clock signal is set up and fed to the DUT. Secondly, the DUT is reset.
-For debugging the code, a random input vector was hand-coded by me such that the sequence 1011 corrected independently and as part of other 1011 sequences.  
+For debugging the code, a random input vector was hand-coded such that the sequence 1011 corrected independently and as part of other 1011 sequences.  
 
 Observation: seq_seen(output) was asserted for independent sequences but not for dependent sequences.
 
